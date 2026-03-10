@@ -6,90 +6,115 @@
   <title>Pagar Fatura - Giro Net</title>
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <style>
+    * { box-sizing: border-box; }
     body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: #061121; 
-  background-image: url("https://johnka1.github.io/pagamento-provedor/wallpaper.png");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
-  background-size: cover;
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #061121 url("https://johnka1.github.io/pagamento-provedor/wallpaper.png") no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+    }
     .container {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(15px) saturate(180%);
-      -webkit-backdrop-filter: blur(15px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 24px;
-      padding: 30px;
+      background: rgba(0, 15, 35, 0.75); /* Fundo mais escuro para dar contraste ao vidro */
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 28px;
+      padding: 30px 20px;
       width: 100%;
-      max-width: 400px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      max-width: 420px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
       text-align: center;
       color: white;
     }
-    h3 { margin-top: 0; margin-bottom: 20px; font-weight: 600; color: #00d4ff; }
+    h3 { margin: 0 0 20px; font-size: 1.5rem; color: #00e5ff; text-transform: uppercase; letter-spacing: 1px; }
     #qrcode {
       background: white;
-      padding: 12px;
-      border-radius: 16px;
-      display: inline-block;
-      margin-bottom: 20px;
-    }
-    canvas { max-width: 100%; height: auto !important; border-radius: 8px; }
-    .dados {
-      background: rgba(0, 0, 0, 0.25);
-      border-radius: 12px;
       padding: 15px;
-      margin-bottom: 10px;
-      text-align: left;
-      font-size: 0.9em;
-      word-break: break-all;
-      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 25px;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
     }
-    .label-fatura { color: #00d4ff; font-weight: bold; display: block; margin-bottom: 4px; font-size: 0.8em; text-transform: uppercase; }
+    canvas { max-width: 100%; height: auto !important; }
+    .dados {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 12px;
+      text-align: left;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .label-fatura { 
+      color: #2ecc71; /* Verde acessível */
+      font-weight: 800; 
+      display: block; 
+      margin-bottom: 6px; 
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+    #pixText, #boletoText {
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      font-size: 1rem;
+      word-break: break-all;
+      color: #ffffff;
+      line-height: 1.4;
+    }
     button {
       width: 100%;
-      padding: 16px;
-      margin-bottom: 12px;
+      min-height: 55px; /* Altura ideal para dedos no mobile */
+      padding: 15px;
+      margin-bottom: 15px;
       border: none;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #00d4ff 0%, #0078ff 100%);
+      border-radius: 16px;
+      /* Degradê Verde para Azul com alto contraste */
+      background: linear-gradient(135deg, #1db954 0%, #0056b3 100%);
       color: white;
-      font-size: 16px;
+      font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
+      transition: 0.3s;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
     }
-    button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4); }
+    button:hover { transform: scale(1.02); filter: brightness(1.1); }
+    button:active { transform: scale(0.98); }
+
+    /* Ajustes específicos para smartphones pequenos */
+    @media (max-width: 360px) {
+      .container { padding: 20px 15px; }
+      h3 { font-size: 1.2rem; }
+      button { font-size: 1rem; }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h3>Pagar Fatura</h3>
     <div id="qrcode"></div>
+    
     <div class="dados">
       <span class="label-fatura">PIX Copia e Cola</span>
-      <span id="pixText">Carregando...</span>
+      <span id="pixText">...</span>
     </div>
     <button onclick="copiarPix()">Copiar Código PIX</button>
+
     <div class="dados">
       <span class="label-fatura">Código de Barras</span>
-      <span id="boletoText">Carregando...</span>
+      <span id="boletoText">...</span>
     </div>
     <button onclick="copiarBoleto()">Copiar Boleto</button>
   </div>
+
   <script>
     const params = new URLSearchParams(window.location.search);
     const pix = params.get("pix") || "";
     const boleto = params.get("boleto") || "";
+
     if (pix) {
       document.getElementById("pixText").innerText = pix;
       QRCode.toCanvas(document.createElement("canvas"), pix, { width: 220, margin: 1 }, function (error, canvas) {
@@ -97,8 +122,15 @@
       });
     }
     if (boleto) document.getElementById("boletoText").innerText = boleto;
-    function copiarPix() { navigator.clipboard.writeText(pix); alert("PIX copiado!"); }
-    function copiarBoleto() { navigator.clipboard.writeText(boleto); alert("Boleto copiado!"); }
+
+    function copiarPix() {
+      navigator.clipboard.writeText(pix);
+      alert("PIX copiado!");
+    }
+    function copiarBoleto() {
+      navigator.clipboard.writeText(boleto);
+      alert("Boleto copiado!");
+    }
   </script>
 </body>
 </html>
