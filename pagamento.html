@@ -2,122 +2,120 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Pagar Fatura</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagar Fatura - Giro Net</title>
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <style>
+    * { box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
-      background-image: url("wallpaper.png");
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #061121 url("./wallpaper.png") no-repeat center center fixed;
       background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
       margin: 0;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 20px;
     }
     .container {
-      background: rgba(255,255,255,0.18);
-      backdrop-filter: blur(11px) saturate(180%);
-      -webkit-backdrop-filter: blur(11px) saturate(180%);
-      border-radius: 18px;
-      padding: 32px 24px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px) saturate(180%);
+      -webkit-backdrop-filter: blur(15px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      padding: 30px;
       width: 100%;
-      max-width: 380px;
-      box-shadow: 0 8px 40px 0 rgba(0, 120, 255, 0.25);
+      max-width: 400px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
       text-align: center;
+      color: white;
     }
-    h3 {
-      margin-bottom: 18px;
-      font-size: 1.3em;
-    }
+    h3 { margin-top: 0; font-weight: 600; letter-spacing: 1px; }
     #qrcode {
-      margin-bottom: 18px;
       background: white;
-      padding: 10px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px 0 rgba(0, 120, 255, 0.10);
+      padding: 15px;
+      border-radius: 15px;
       display: inline-block;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
+    canvas { max-width: 100%; height: auto !important; }
     .dados {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 15px;
       margin-bottom: 10px;
       text-align: left;
-      font-size: 1em;
-      color: #222;
+      font-size: 0.9em;
       word-break: break-all;
-      background: rgba(255,255,255,0.18);
-      backdrop-filter: blur(5.5px) saturate(180%);
-      -webkit-backdrop-filter: blur(5.5px) saturate(180%);
-      border-radius: 8px;
-      padding: 10px;
-      box-shadow: 0 2px 8px 0 rgba(0, 120, 255, 0.10);
+      border: 1px solid rgba(255,255,255,0.1);
     }
+    .label-fatura { color: #00d4ff; font-weight: bold; display: block; margin-bottom: 5px; }
     button {
       width: 100%;
-      padding: 14px;
-      margin-top: 10px;
+      padding: 15px;
+      margin-top: 5px;
+      margin-bottom: 15px;
       border: none;
       border-radius: 12px;
-      background: linear-gradient(90deg, rgba(0,212,255,0.4) 0%, rgba(0,212,255,0.7) 100%);
+      background: linear-gradient(90deg, #00d4ff 0%, #0078ff 100%);
       color: white;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.2s;
-      backdrop-filter: blur(5.5px) saturate(180%);
-      -webkit-backdrop-filter: blur(5.5px) saturate(180%);
-      box-shadow: 0 4px 20px 0 rgba(0, 120, 255, 0.25);
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
     }
-    button:hover {
-      background: linear-gradient(90deg, rgba(0,212,255,0.7) 0%, rgba(0,212,255,1) 100%);
-      transform: scale(1.04);
-    }
-    @media (max-width: 500px) {
-      .container { padding: 18px 4vw; }
-      .dados { font-size: 0.95em; }
-    }
+    button:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(0, 212, 255, 0.5); }
+    button:active { transform: scale(0.98); }
   </style>
 </head>
 <body>
   <div class="container">
     <h3>Pagar Fatura</h3>
     <div id="qrcode"></div>
-    <div class="dados" id="pixArea"></div>
-    <button onclick="copiarPix()">Copiar PIX</button>
-    <div class="dados" id="boletoArea"></div>
-    <button onclick="copiarBoleto()">Copiar Código de Barras</button>
+    
+    <div class="dados">
+      <span class="label-fatura">PIX Copia e Cola:</span>
+      <span id="pixText"></span>
+    </div>
+    <button onclick="copiarPix()">Copiar Código PIX</button>
+
+    <div class="dados">
+      <span class="label-fatura">Código de Barras:</span>
+      <span id="boletoText"></span>
+    </div>
+    <button onclick="copiarBoleto()">Copiar Boleto</button>
   </div>
+
   <script>
     const params = new URLSearchParams(window.location.search);
     const pix = params.get("pix") || "";
     const boleto = params.get("boleto") || "";
-    const qrcodeDiv = document.getElementById("qrcode");
-    const pixArea = document.getElementById("pixArea");
-    const boletoArea = document.getElementById("boletoArea");
 
     if (pix) {
-      QRCode.toCanvas(document.createElement("canvas"), pix, function (error, canvas) {
-        if (!error) qrcodeDiv.appendChild(canvas);
+      document.getElementById("pixText").innerText = pix;
+      QRCode.toCanvas(document.createElement("canvas"), pix, { width: 200, margin: 0 }, function (error, canvas) {
+        if (!error) document.getElementById("qrcode").appendChild(canvas);
       });
-      pixArea.innerHTML = "<b>PIX:</b><br>" + pix;
     } else {
-      pixArea.innerHTML = "<b>PIX:</b><br><i>Não informado</i>";
+      document.getElementById("pixText").innerText = "Não informado";
     }
+
     if (boleto) {
-      boletoArea.innerHTML = "<b>Código de Barras:</b><br>" + boleto;
+      document.getElementById("boletoText").innerText = boleto;
     } else {
-      boletoArea.innerHTML = "<b>Código de Barras:</b><br><i>Não informado</i>";
+      document.getElementById("boletoText").innerText = "Não informado";
     }
 
     function copiarPix() {
       navigator.clipboard.writeText(pix);
-      alert("PIX copiado!");
+      alert("PIX copiado com sucesso!");
     }
     function copiarBoleto() {
       navigator.clipboard.writeText(boleto);
-      alert("Código de barras copiado!");
+      alert("Boleto copiado com sucesso!");
     }
   </script>
 </body>
