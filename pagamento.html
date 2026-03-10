@@ -8,7 +8,8 @@
   <style>
     * { box-sizing: border-box; }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      /* O #061121 é o fundo caso a imagem falhe */
       background: #061121 url("./wallpaper.png") no-repeat center center fixed;
       background-size: cover;
       margin: 0;
@@ -19,56 +20,54 @@
       padding: 20px;
     }
     .container {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(15px) saturate(180%);
       -webkit-backdrop-filter: blur(15px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 24px;
       padding: 30px;
       width: 100%;
       max-width: 400px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
       text-align: center;
       color: white;
     }
-    h3 { margin-top: 0; font-weight: 600; letter-spacing: 1px; }
+    h3 { margin-top: 0; margin-bottom: 20px; font-weight: 600; color: #00d4ff; }
     #qrcode {
       background: white;
-      padding: 15px;
-      border-radius: 15px;
+      padding: 12px;
+      border-radius: 16px;
       display: inline-block;
       margin-bottom: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
-    canvas { max-width: 100%; height: auto !important; }
+    canvas { max-width: 100%; height: auto !important; border-radius: 8px; }
     .dados {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.25);
       border-radius: 12px;
       padding: 15px;
       margin-bottom: 10px;
       text-align: left;
       font-size: 0.9em;
       word-break: break-all;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.05);
     }
-    .label-fatura { color: #00d4ff; font-weight: bold; display: block; margin-bottom: 5px; }
+    .label-fatura { color: #00d4ff; font-weight: bold; display: block; margin-bottom: 4px; font-size: 0.8em; text-transform: uppercase; }
     button {
       width: 100%;
-      padding: 15px;
-      margin-top: 5px;
-      margin-bottom: 15px;
+      padding: 16px;
+      margin-bottom: 12px;
       border: none;
-      border-radius: 12px;
-      background: linear-gradient(90deg, #00d4ff 0%, #0078ff 100%);
+      border-radius: 14px;
+      background: linear-gradient(135deg, #00d4ff 0%, #0078ff 100%);
       color: white;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
     }
-    button:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(0, 212, 255, 0.5); }
-    button:active { transform: scale(0.98); }
+    button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4); }
+    button:active { transform: translateY(0); }
   </style>
 </head>
 <body>
@@ -77,14 +76,14 @@
     <div id="qrcode"></div>
     
     <div class="dados">
-      <span class="label-fatura">PIX Copia e Cola:</span>
-      <span id="pixText"></span>
+      <span class="label-fatura">PIX Copia e Cola</span>
+      <span id="pixText">Carregando...</span>
     </div>
     <button onclick="copiarPix()">Copiar Código PIX</button>
 
     <div class="dados">
-      <span class="label-fatura">Código de Barras:</span>
-      <span id="boletoText"></span>
+      <span class="label-fatura">Código de Barras</span>
+      <span id="boletoText">Carregando...</span>
     </div>
     <button onclick="copiarBoleto()">Copiar Boleto</button>
   </div>
@@ -96,26 +95,26 @@
 
     if (pix) {
       document.getElementById("pixText").innerText = pix;
-      QRCode.toCanvas(document.createElement("canvas"), pix, { width: 200, margin: 0 }, function (error, canvas) {
+      QRCode.toCanvas(document.createElement("canvas"), pix, { width: 220, margin: 1, color: { dark: "#061121" } }, function (error, canvas) {
         if (!error) document.getElementById("qrcode").appendChild(canvas);
       });
     } else {
-      document.getElementById("pixText").innerText = "Não informado";
+      document.getElementById("pixText").innerText = "Não disponível";
     }
 
     if (boleto) {
       document.getElementById("boletoText").innerText = boleto;
     } else {
-      document.getElementById("boletoText").innerText = "Não informado";
+      document.getElementById("boletoText").innerText = "Não disponível";
     }
 
     function copiarPix() {
       navigator.clipboard.writeText(pix);
-      alert("PIX copiado com sucesso!");
+      alert("PIX copiado!");
     }
     function copiarBoleto() {
       navigator.clipboard.writeText(boleto);
-      alert("Boleto copiado com sucesso!");
+      alert("Boleto copiado!");
     }
   </script>
 </body>
