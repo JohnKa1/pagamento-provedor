@@ -67,7 +67,10 @@ const params = new URLSearchParams(window.location.search)
 const pix = decodeURIComponent(params.get("pix"))
 const boleto = decodeURIComponent(params.get("boleto"))
 
-QRCode.toCanvas(document.getElementById("qrcode"), pix)
+QRCode.toCanvas(pix, function (error, canvas) {
+if (error) console.error(error)
+document.getElementById("qrcode").appendChild(canvas)
+})
 
 function copiarPix(){
 navigator.clipboard.writeText(pix)
