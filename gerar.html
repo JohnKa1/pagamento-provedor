@@ -3,64 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerar Pagamento - Giro Net</title>
+  <title>Gerador Giro Net</title>
   <style>
+    * { box-sizing: border-box; }
     body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: #061121; 
-  background-image: url("https://johnka1.github.io/pagamento-provedor/wallpaper.png");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
-  background-size: cover;
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
+      font-family: 'Segoe UI', sans-serif;
+      background: #061121 url("https://johnka1.github.io/pagamento-provedor/wallpaper.png") no-repeat center center fixed;
+      background-size: cover;
+      margin: 0; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center; padding: 15px;
+    }
     .container {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(15px) saturate(180%);
-      -webkit-backdrop-filter: blur(15px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 24px;
+      background: rgba(0, 10, 25, 0.8);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 28px;
       padding: 30px;
-      width: 100%;
-      max-width: 450px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-      text-align: center;
-      color: white;
+      width: 100%; max-width: 450px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      color: white; text-align: center;
+      border: 1px solid rgba(255,255,255,0.1);
     }
-    h2 { margin-top: 0; color: #00d4ff; }
-    label { display: block; text-align: left; margin: 10px 0 5px; font-weight: bold; font-size: 0.9em; }
+    h2 { color: #00e5ff; margin-bottom: 25px; }
+    label { display: block; text-align: left; margin: 15px 0 8px; font-weight: bold; color: #2ecc71; }
     textarea {
-      width: 100%; height: 80px; resize: none; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);
-      padding: 12px; background: rgba(0, 0, 0, 0.3); color: white; margin-bottom: 10px;
+      width: 100%; height: 90px; resize: none; border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.1); padding: 12px;
+      background: rgba(0,0,0,0.3); color: white; font-size: 1rem;
     }
+    textarea:focus { border-color: #00e5ff; outline: none; }
     button {
-      width: 100%; padding: 15px; border: none; border-radius: 12px;
-      background: linear-gradient(90deg, #00d4ff 0%, #0078ff 100%);
-      color: white; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px;
+      width: 100%; min-height: 55px; border: none; border-radius: 16px;
+      background: linear-gradient(135deg, #1db954 0%, #0056b3 100%);
+      color: white; font-size: 1.1rem; font-weight: bold; cursor: pointer;
+      margin-top: 20px; box-shadow: 0 8px 15px rgba(0,0,0,0.3);
     }
     #linkGerado {
-      margin-top: 20px; background: rgba(255,255,255,0.9); color: #333; padding: 15px;
-      border-radius: 12px; word-break: break-all; font-size: 0.85em; display: none;
+      margin-top: 25px; background: #ffffff; color: #061121; padding: 20px;
+      border-radius: 16px; word-break: break-all; font-weight: bold;
+      display: none; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
     }
-    .btn-copy { background: #25d366; margin-top: 10px; display: none; }
+    .btn-whatsapp { background: #25d366; color: #fff; margin-top: 15px; display: none; }
   </style>
 </head>
 <body>
 <div class="container">
-  <h2>Gerar Cobrança</h2>
-  <label>PIX</label>
-  <textarea id="pix"></textarea>
-  <label>Boleto</label>
-  <textarea id="boleto"></textarea>
-  <button onclick="gerar()">Gerar Link</button>
+  <h2>Gerador de Cobrança</h2>
+  <label>CÓDIGO PIX</label>
+  <textarea id="pix" placeholder="Cole o Pix aqui..."></textarea>
+  <label>CÓDIGO BOLETO</label>
+  <textarea id="boleto" placeholder="Cole o boleto aqui..."></textarea>
+  <button onclick="gerar()">GERAR LINK AGORA</button>
   <div id="linkGerado"></div>
-  <button id="btnCopy" class="btn-copy" onclick="copiar()">📋 Copiar para WhatsApp</button>
+  <button id="btnCopy" class="btn-whatsapp" onclick="copiar()">📋 COPIAR PARA WHATSAPP</button>
 </div>
 <script>
   let linkFinal = "";
@@ -68,11 +63,12 @@
     const p = encodeURIComponent(document.getElementById("pix").value.trim());
     const b = encodeURIComponent(document.getElementById("boleto").value.trim());
     linkFinal = "https://johnka1.github.io/pagamento-provedor/pagamento.html?pix=" + p + "&boleto=" + b;
-    document.getElementById("linkGerado").innerText = linkFinal;
-    document.getElementById("linkGerado").style.display = "block";
+    const res = document.getElementById("linkGerado");
+    res.innerText = linkFinal;
+    res.style.display = "block";
     document.getElementById("btnCopy").style.display = "block";
   }
-  function copiar() { navigator.clipboard.writeText(linkFinal); alert("Copiado!"); }
+  function copiar() { navigator.clipboard.writeText(linkFinal); alert("Link copiado para o WhatsApp!"); }
 </script>
 </body>
 </html>
