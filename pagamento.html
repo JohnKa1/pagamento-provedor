@@ -116,4 +116,122 @@ alert("Código de barras copiado!")
 </script>
 
 </body>
+</html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Pagar Fatura</title>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background-image:url("wallpaper.png");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+height:100vh;
+margin:0;
+ background-attachment:fixed;
+}
+
+.container{
+position:absolute;
+top:68%;
+left:50%;
+transform:translate(-50%,-50%);
+
+background:rgba(255,255,255,0.18);
+backdrop-filter: blur(11px) saturate(180%);
+-webkit-backdrop-filter: blur(11px) saturate(180%);
+border-radius:18px;
+padding:26px;
+width:364px;
+text-align:center;
+box-shadow:0 8px 40px 0 rgba(0, 120, 255, 0.25);
+}
+textarea {
+	resize: none;
+	background:rgba(255,255,255,0.18);
+	backdrop-filter: blur(5.5px) saturate(180%);
+	-webkit-backdrop-filter: blur(5.5px) saturate(180%);
+	box-shadow:0 2px 8px 0 rgba(0, 120, 255, 0.10);
+}
+
+#qrcode{
+margin-bottom:15px;
+background:white;
+padding:10px;
+border-radius:8px;
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:8px;
+border:none;
+border-radius:12px;
+background: linear-gradient(90deg, rgba(0,212,255,0.4) 0%, rgba(0,212,255,0.7) 100%);
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:0.2s;
+backdrop-filter: blur(5.5px) saturate(180%);
+-webkit-backdrop-filter: blur(5.5px) saturate(180%);
+box-shadow:0 4px 20px 0 rgba(0, 120, 255, 0.25);
+}
+
+button:hover{
+background: linear-gradient(90deg, rgba(0,212,255,0.7) 0%, rgba(0,212,255,1) 100%);
+transform:scale(1.05);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h3>Pagar Fatura</h3>
+
+<canvas id="qrcode"></canvas>
+
+<button onclick="copiarPix()">Copiar PIX</button>
+
+<button onclick="copiarBoleto()">Copiar Código de Barras</button>
+
+</div>
+
+<script>
+
+const params = new URLSearchParams(window.location.search)
+
+const pix = params.get("pix")
+const boleto = params.get("boleto")
+
+const canvas = document.getElementById("qrcode")
+
+if(pix){
+QRCode.toCanvas(canvas, pix, function (error) {
+if (error) console.error(error)
+})
+}
+
+function copiarPix(){
+navigator.clipboard.writeText(pix)
+alert("PIX copiado!")
+}
+
+function copiarBoleto(){
+navigator.clipboard.writeText(boleto)
+alert("Código de barras copiado!")
+}
+
+</script>
+
+</body>
 </html>
