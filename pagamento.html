@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Pagar Fatura</title>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f4f4;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.container{
+background:white;
+padding:30px;
+border-radius:10px;
+text-align:center;
+width:350px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:10px;
+border:none;
+border-radius:6px;
+background:#25D366;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+#qrcode{
+margin-bottom:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Pagar Fatura</h2>
+
+<div id="qrcode"></div>
+
+<button onclick="copiarPix()">Copiar PIX</button>
+
+<button onclick="copiarBoleto()">Copiar Código de Barras</button>
+
+</div>
+
+<script>
+
+const params = new URLSearchParams(window.location.search)
+
+const pix = decodeURIComponent(params.get("pix"))
+const boleto = decodeURIComponent(params.get("boleto"))
+
+QRCode.toCanvas(document.getElementById("qrcode"), pix)
+
+function copiarPix(){
+navigator.clipboard.writeText(pix)
+alert("PIX copiado!")
+}
+
+function copiarBoleto(){
+navigator.clipboard.writeText(boleto)
+alert("Código de barras copiado!")
+}
+
+</script>
+
+</body>
+</html>
