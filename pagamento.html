@@ -67,10 +67,18 @@ const params = new URLSearchParams(window.location.search)
 const pix = decodeURIComponent(params.get("pix"))
 const boleto = decodeURIComponent(params.get("boleto"))
 
-QRCode.toCanvas(pix, function (error, canvas) {
+const params = new URLSearchParams(window.location.search)
+
+const pix = params.get("pix")
+const boleto = params.get("boleto")
+
+const canvas = document.getElementById("qrcode")
+
+if(pix){
+QRCode.toCanvas(canvas, pix, function (error) {
 if (error) console.error(error)
-document.getElementById("qrcode").appendChild(canvas)
 })
+}
 
 function copiarPix(){
 navigator.clipboard.writeText(pix)
@@ -81,8 +89,3 @@ function copiarBoleto(){
 navigator.clipboard.writeText(boleto)
 alert("Código de barras copiado!")
 }
-
-</script>
-
-</body>
-</html>
