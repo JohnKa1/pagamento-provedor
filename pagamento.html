@@ -16,21 +16,30 @@ background-position:center;
 background-repeat:no-repeat;
 height:100vh;
 margin:0;
+ background-attachment:fixed;
 }
 
 .container{
 position:absolute;
-top:60%;
+top:68%;
 left:50%;
 transform:translate(-50%,-50%);
 
-background:rgba(255,255,255,0.95);
-padding:20px;
-border-radius:14px;
+background:rgba(255,255,255,0.18);
+backdrop-filter: blur(11px) saturate(180%);
+-webkit-backdrop-filter: blur(11px) saturate(180%);
+border-radius:18px;
+padding:26px;
+width:364px;
 text-align:center;
-width:280px;
-
-box-shadow:0 15px 40px rgba(0,0,0,0.3);
+box-shadow:0 8px 40px 0 rgba(0, 120, 255, 0.25);
+}
+textarea {
+	resize: none;
+	background:rgba(255,255,255,0.18);
+	backdrop-filter: blur(5.5px) saturate(180%);
+	-webkit-backdrop-filter: blur(5.5px) saturate(180%);
+	box-shadow:0 2px 8px 0 rgba(0, 120, 255, 0.10);
 }
 
 #qrcode{
@@ -45,18 +54,21 @@ width:100%;
 padding:14px;
 margin-top:8px;
 border:none;
-border-radius:8px;
-background:#00C48C;
+border-radius:12px;
+background: linear-gradient(90deg, rgba(0,212,255,0.4) 0%, rgba(0,212,255,0.7) 100%);
 color:white;
 font-size:16px;
 font-weight:bold;
 cursor:pointer;
 transition:0.2s;
+backdrop-filter: blur(5.5px) saturate(180%);
+-webkit-backdrop-filter: blur(5.5px) saturate(180%);
+box-shadow:0 4px 20px 0 rgba(0, 120, 255, 0.25);
 }
 
 button:hover{
-background:#00996c;
-transform:scale(1.04);
+background: linear-gradient(90deg, rgba(0,212,255,0.7) 0%, rgba(0,212,255,1) 100%);
+transform:scale(1.05);
 }
 
 </style>
