@@ -10,49 +10,65 @@
 
 body{
 font-family:Arial;
-background:#f4f4f4;
-display:flex;
-justify-content:center;
-align-items:center;
+background-image:url("wallpaper.jpg");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
 height:100vh;
+margin:0;
 }
 
 .container{
-background:white;
-padding:30px;
-border-radius:10px;
+position:absolute;
+top:60%;
+left:50%;
+transform:translate(-50%,-50%);
+
+background:rgba(255,255,255,0.95);
+padding:20px;
+border-radius:14px;
 text-align:center;
-width:350px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
+width:280px;
+
+box-shadow:0 15px 40px rgba(0,0,0,0.3);
+}
+
+#qrcode{
+margin-bottom:15px;
+background:white;
+padding:10px;
+border-radius:8px;
 }
 
 button{
 width:100%;
 padding:14px;
-margin-top:10px;
+margin-top:8px;
 border:none;
-border-radius:6px;
-background:#25D366;
+border-radius:8px;
+background:#00C48C;
 color:white;
 font-size:16px;
+font-weight:bold;
 cursor:pointer;
+transition:0.2s;
 }
 
-#qrcode{
-margin-bottom:20px;
+button:hover{
+background:#00996c;
+transform:scale(1.04);
 }
 
 </style>
-
 </head>
 
 <body>
 
 <div class="container">
 
-<h2>Pagar Fatura</h2>
+<h3>Pagar Fatura</h3>
 
-<div id="qrcode"></div>
+<canvas id="qrcode"></canvas>
 
 <button onclick="copiarPix()">Copiar PIX</button>
 
@@ -61,11 +77,6 @@ margin-bottom:20px;
 </div>
 
 <script>
-
-const params = new URLSearchParams(window.location.search)
-
-const pix = decodeURIComponent(params.get("pix"))
-const boleto = decodeURIComponent(params.get("boleto"))
 
 const params = new URLSearchParams(window.location.search)
 
@@ -89,3 +100,8 @@ function copiarBoleto(){
 navigator.clipboard.writeText(boleto)
 alert("Código de barras copiado!")
 }
+
+</script>
+
+</body>
+</html>
