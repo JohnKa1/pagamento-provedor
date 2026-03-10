@@ -9,8 +9,8 @@
     * { box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
-      /* O #061121 é o fundo caso a imagem falhe */
-      background: #061121 url("./wallpaper.png") no-repeat center center fixed;
+      /* Link absoluto para garantir o carregamento */
+      background: #061121 url("https://johnka1.github.io/pagamento-provedor/wallpaper.png") no-repeat center center fixed;
       background-size: cover;
       margin: 0;
       min-height: 100vh;
@@ -67,55 +67,36 @@
       box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
     }
     button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4); }
-    button:active { transform: translateY(0); }
   </style>
 </head>
 <body>
   <div class="container">
     <h3>Pagar Fatura</h3>
     <div id="qrcode"></div>
-    
     <div class="dados">
       <span class="label-fatura">PIX Copia e Cola</span>
       <span id="pixText">Carregando...</span>
     </div>
     <button onclick="copiarPix()">Copiar Código PIX</button>
-
     <div class="dados">
       <span class="label-fatura">Código de Barras</span>
       <span id="boletoText">Carregando...</span>
     </div>
     <button onclick="copiarBoleto()">Copiar Boleto</button>
   </div>
-
   <script>
     const params = new URLSearchParams(window.location.search);
     const pix = params.get("pix") || "";
     const boleto = params.get("boleto") || "";
-
     if (pix) {
       document.getElementById("pixText").innerText = pix;
-      QRCode.toCanvas(document.createElement("canvas"), pix, { width: 220, margin: 1, color: { dark: "#061121" } }, function (error, canvas) {
+      QRCode.toCanvas(document.createElement("canvas"), pix, { width: 220, margin: 1 }, function (error, canvas) {
         if (!error) document.getElementById("qrcode").appendChild(canvas);
       });
-    } else {
-      document.getElementById("pixText").innerText = "Não disponível";
     }
-
-    if (boleto) {
-      document.getElementById("boletoText").innerText = boleto;
-    } else {
-      document.getElementById("boletoText").innerText = "Não disponível";
-    }
-
-    function copiarPix() {
-      navigator.clipboard.writeText(pix);
-      alert("PIX copiado!");
-    }
-    function copiarBoleto() {
-      navigator.clipboard.writeText(boleto);
-      alert("Boleto copiado!");
-    }
+    if (boleto) document.getElementById("boletoText").innerText = boleto;
+    function copiarPix() { navigator.clipboard.writeText(pix); alert("PIX copiado!"); }
+    function copiarBoleto() { navigator.clipboard.writeText(boleto); alert("Boleto copiado!"); }
   </script>
 </body>
 </html>
