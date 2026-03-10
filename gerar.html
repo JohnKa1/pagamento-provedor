@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerador de Pagamento - Giro Net</title>
+  <title>Gerar Pagamento - Giro Net</title>
   <style>
     * { box-sizing: border-box; }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #061121 url("./wallpaper.png") no-repeat center center fixed;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #061121 url("https://johnka1.github.io/pagamento-provedor/wallpaper.png") no-repeat center center fixed;
       background-size: cover;
       margin: 0;
       min-height: 100vh;
@@ -33,84 +33,43 @@
     h2 { margin-top: 0; color: #00d4ff; }
     label { display: block; text-align: left; margin: 10px 0 5px; font-weight: bold; font-size: 0.9em; }
     textarea {
-      width: 100%;
-      height: 80px;
-      resize: none;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 12px;
-      background: rgba(0, 0, 0, 0.3);
-      color: white;
-      margin-bottom: 10px;
+      width: 100%; height: 80px; resize: none; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);
+      padding: 12px; background: rgba(0, 0, 0, 0.3); color: white; margin-bottom: 10px;
     }
     button {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 12px;
+      width: 100%; padding: 15px; border: none; border-radius: 12px;
       background: linear-gradient(90deg, #00d4ff 0%, #0078ff 100%);
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: 0.2s;
-    }
-    button:hover { transform: scale(1.02); }
-    #resultado {
-      margin-top: 20px;
-      display: none;
+      color: white; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px;
     }
     #linkGerado {
-      background: rgba(255,255,255,0.9);
-      color: #333;
-      padding: 15px;
-      border-radius: 12px;
-      word-break: break-all;
-      font-size: 0.85em;
-      margin-bottom: 10px;
+      margin-top: 20px; background: rgba(255,255,255,0.9); color: #333; padding: 15px;
+      border-radius: 12px; word-break: break-all; font-size: 0.85em; display: none;
     }
-    .btn-whatsapp { background: #25d366; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
+    .btn-copy { background: #25d366; margin-top: 10px; display: none; }
   </style>
 </head>
 <body>
-
 <div class="container">
-  <h2>Gerar Link de Cobrança</h2>
-
-  <label>PIX Copia e Cola</label>
-  <textarea id="pix" placeholder="Cole o código PIX aqui..."></textarea>
-
-  <label>Código de Barras (Opcional)</label>
-  <textarea id="boleto" placeholder="Cole o código de barras aqui..."></textarea>
-
-  <button onclick="gerar()">Gerar Link de Pagamento</button>
-
-  <div id="resultado">
-    <div id="linkGerado"></div>
-    <button class="btn-whatsapp" onclick="copiarLink()">📋 Copiar Link para WhatsApp</button>
-  </div>
+  <h2>Gerar Cobrança</h2>
+  <label>PIX</label>
+  <textarea id="pix"></textarea>
+  <label>Boleto</label>
+  <textarea id="boleto"></textarea>
+  <button onclick="gerar()">Gerar Link</button>
+  <div id="linkGerado"></div>
+  <button id="btnCopy" class="btn-copy" onclick="copiar()">📋 Copiar para WhatsApp</button>
 </div>
-
 <script>
   let linkFinal = "";
-
   function gerar() {
-    const pix = encodeURIComponent(document.getElementById("pix").value.trim());
-    const boleto = encodeURIComponent(document.getElementById("boleto").value.trim());
-    
-    // Altere o link abaixo para o seu link real do GitHub Pages
-    linkFinal = "https://johnka1.github.io/pagamento-provedor/pagamento.html?pix=" + pix + "&boleto=" + boleto;
-
-    document.getElementById("resultado").style.display = "block";
+    const p = encodeURIComponent(document.getElementById("pix").value.trim());
+    const b = encodeURIComponent(document.getElementById("boleto").value.trim());
+    linkFinal = "https://johnka1.github.io/pagamento-provedor/pagamento.html?pix=" + p + "&boleto=" + b;
     document.getElementById("linkGerado").innerText = linkFinal;
+    document.getElementById("linkGerado").style.display = "block";
+    document.getElementById("btnCopy").style.display = "block";
   }
-
-  function copiarLink() {
-    navigator.clipboard.writeText(linkFinal);
-    alert("Link copiado! Agora é só colar no WhatsApp do cliente.");
-  }
+  function copiar() { navigator.clipboard.writeText(linkFinal); alert("Copiado!"); }
 </script>
-
 </body>
 </html>
