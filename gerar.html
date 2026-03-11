@@ -6,84 +6,201 @@
   <title>Gerador Giro Net</title>
   <style>
     * { box-sizing: border-box; }
+    
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #020617 url("https://johnka1.github.io/pagamento-provedor/wallpaper.png") no-repeat center center fixed;
+      /* Fundo base escuro */
+      background-color: #020617;
+      background-image: url("https://johnka1.github.io/pagamento-provedor/wallpaper.png");
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
       background-size: cover;
-      margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 15px;
+      margin: 0; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center; padding: 15px;
+      overflow-x: hidden;
     }
 
     @keyframes surgir {
-      0% { opacity: 0; transform: scale(0.5); }
+      0% { opacity: 0; transform: scale(0.4); }
       100% { opacity: 1; transform: scale(1); }
     }
 
     .container {
-  /* O primeiro linear-gradient é o fundo do card (Azul Absoluto) */
-  /* O segundo é a borda (Azul Oceano -> Verde Esmeralda) - SEM O PRETO */
-  background: 
-    linear-gradient(#020617, #020617) padding-box, 
-    linear-gradient(135deg, #008fb3, #2ecc71) border-box;
-  
-  border: 5px solid transparent; /* Mantém a borda transparente para o degradê aparecer */
-  border-radius: 35px;
-  padding: 40px 25px;
-  width: 100%;
-  max-width: 480px;
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 1);
-  text-align: center;
-  color: white;
-  
-  /* Mantendo a animação e o delay que você configurou */
-  opacity: 0;
-  pointer-events: none;
-}
+      position: relative;
+      /* FUNDO DO CARD E BORDA EM DEGRADÊ AZUL/VERDE */
+      background: 
+        linear-gradient(#020617, #020617) padding-box, 
+        linear-gradient(135deg, #008fb3, #2ecc71) border-box;
+      border: 5px solid transparent;
+      
+      border-radius: 35px;
+      padding: 40px 30px; 
+      width: 100%; max-width: 500px;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 1);
+      color: white; text-align: center;
+      
+      /* Invisível até o delay de 1s */
+      opacity: 0;
+      pointer-events: none;
+    }
 
     .container.visivel {
-      animation: surgir 0.6s ease-out forwards;
+      animation: surgir 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       pointer-events: auto;
     }
 
-    h2 { color: #008fb3; font-size: 2.2rem; margin-bottom: 20px; text-shadow: 2px 2px 4px #000; }
-    label { display: block; text-align: left; margin: 20px 0 10px; font-weight: 900; color: #2ecc71; font-size: 1.4rem; }
-    textarea { width: 100%; height: 110px; border-radius: 16px; border: 2px solid #ffffff11; padding: 15px; background: #00000088; color: white; font-size: 1.2rem; }
-    button { width: 100%; min-height: 80px; border: none; border-radius: 20px; background: linear-gradient(135deg, #1db954 0%, #0056b3 100%); color: white; font-size: 1.7rem; font-weight: 900; cursor: pointer; margin-top: 25px; }
-    #linkGerado { margin-top: 30px; background: #ffffff; color: #061121; padding: 25px; border-radius: 20px; word-break: break-all; font-weight: 900; font-size: 1.3rem; display: none; }
-    .btn-whatsapp { background: #25d366; color: #fff; margin-top: 20px; display: none; }
+    h2 { 
+      color: #008fb3; 
+      font-size: 2.2rem; 
+      margin-bottom: 20px; 
+      text-transform: uppercase;
+      text-shadow: 2px 2px 4px #000; 
+    }
+
+    label { 
+      display: block; 
+      text-align: left; 
+      margin: 20px 0 10px; 
+      font-weight: 900; 
+      color: #2ecc71; 
+      font-size: 1.4rem; 
+      text-transform: uppercase;
+    }
+
+    textarea { 
+      width: 100%; 
+      height: 110px; 
+      border-radius: 16px; 
+      border: 2px solid #ffffff11; 
+      padding: 15px; 
+      background: #00000088; 
+      color: white; 
+      font-size: 1.2rem; 
+      resize: none;
+    }
+    
+    textarea:focus {
+      outline: none;
+      border-color: #008fb3;
+    }
+
+    button { 
+      width: 100%; 
+      min-height: 80px; 
+      border: none; 
+      border-radius: 20px; 
+      background: linear-gradient(135deg, #1db954 0%, #0056b3 100%); 
+      color: white; 
+      font-size: 1.7rem; 
+      font-weight: 900; 
+      cursor: pointer; 
+      margin-top: 25px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    button:active { transform: scale(0.97); }
+
+    #linkGerado { 
+      margin-top: 30px; 
+      background: #ffffff; 
+      color: #020617; 
+      padding: 25px; 
+      border-radius: 20px; 
+      word-break: break-all; 
+      font-weight: 900; 
+      font-size: 1.3rem; 
+      display: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .btn-whatsapp { 
+      background: #25d366; 
+      color: #fff; 
+      margin-top: 20px; 
+      display: none; 
+    }
+
+    @media (max-width: 450px) {
+      h2 { font-size: 1.8rem; }
+      label { font-size: 1.2rem; }
+      button { font-size: 1.5rem; }
+    }
   </style>
 </head>
 <body>
+
 <div class="container" id="mainCard">
   <h2>GERADOR DE COBRANÇA</h2>
+  
   <label>CÓDIGO PIX</label>
-  <textarea id="pix"></textarea>
+  <textarea id="pix" placeholder="Cole o código PIX aqui..."></textarea>
+  
   <label>CÓDIGO BOLETO</label>
-  <textarea id="boleto"></textarea>
+  <textarea id="boleto" placeholder="Cole o código de barras aqui..."></textarea>
+  
   <button onclick="gerar()">GERAR LINK</button>
+  
   <div id="linkGerado"></div>
-  <button id="btnCopy" class="btn-whatsapp" onclick="copiar()">📋 COPIAR LINK</button>
+  <button id="btnCopy" class="btn-whatsapp" onclick="copiar()">📋 COPIAR LINK PARA WHATSAPP</button>
 </div>
+
 <script>
+    // Lógica de Delay e Monitoramento de Imagem
     const wallpaperUrl = "https://johnka1.github.io/pagamento-provedor/wallpaper.png";
     const img = new Image();
     const card = document.getElementById("mainCard");
 
     img.onload = function() {
-      setTimeout(() => { card.classList.add("visivel"); }, 1000); 
+      // Delay de exatamente 1 segundo (1000ms) após carregar o wallpaper
+      setTimeout(() => { 
+        card.classList.add("visivel"); 
+      }, 1000); 
     };
-    img.onerror = function() { card.classList.add("visivel"); };
+
+    img.onerror = function() { 
+      // Se a imagem falhar, mostra o card para não travar o sistema
+      card.classList.add("visivel"); 
+    };
+
     img.src = wallpaperUrl;
 
-  let linkFinal = "";
-  function gerar() {
-    const p = encodeURIComponent(document.getElementById("pix").value.trim());
-    const b = encodeURIComponent(document.getElementById("boleto").value.trim());
-    linkFinal = "https://johnka1.github.io/pagamento-provedor/pagamento.html?pix=" + p + "&boleto=" + b;
-    const res = document.getElementById("linkGerado");
-    res.innerText = linkFinal; res.style.display = "block";
-    document.getElementById("btnCopy").style.display = "block";
-  }
-  function copiar() { navigator.clipboard.writeText(linkFinal); alert("LINK COPIADO!"); }
+    // Lógica de Geração de Link
+    let linkFinal = "";
+    function gerar() {
+      const pixVal = document.getElementById("pix").value.trim();
+      const boletoVal = document.getElementById("boleto").value.trim();
+      
+      if(!pixVal && !boletoVal) {
+        alert("Por favor, preencha pelo menos um campo.");
+        return;
+      }
+
+      const p = encodeURIComponent(pixVal);
+      const b = encodeURIComponent(boletoVal);
+      
+      // Ajuste para o seu link real do GitHub Pages
+      linkFinal = "https://johnka1.github.io/pagamento-provedor/pagamento.html?pix=" + p + "&boleto=" + b;
+      
+      const res = document.getElementById("linkGerado");
+      res.innerText = linkFinal; 
+      res.style.display = "block";
+      document.getElementById("btnCopy").style.display = "block";
+      
+      // Rola a tela para baixo para mostrar o link gerado no mobile
+      setTimeout(() => {
+        res.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+
+    function copiar() { 
+      if(linkFinal) {
+        navigator.clipboard.writeText(linkFinal); 
+        alert("LINK COPIADO COM SUCESSO!"); 
+      }
+    }
 </script>
+
 </body>
 </html>
