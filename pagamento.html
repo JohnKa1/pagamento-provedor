@@ -15,26 +15,26 @@
       display: flex; align-items: center; justify-content: center; padding: 15px;
     }
     
-  .container {
-  /* Usamos um azul bem profundo (0, 25, 50) e 
-     subimos a opacidade para 0.7 para a cor aparecer bem */
+ .container {
+  /* O segredo: baixamos de 0.85 para 0.4 */
   background: rgba(0, 15, 35, 0.4); 
   
-  /* O borrão (blur) continua forte para o efeito de vidro */
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  /* Aumentamos o desfoque para o fundo não atrapalhar o texto */
+  backdrop-filter: blur(25px) saturate(200%);
+  -webkit-backdrop-filter: blur(25px) saturate(200%);
   
-  /* Borda ciano com 40% de brilho para destacar o card */
-  border: 2px solid rgba(0, 229, 255, 0.4);
+  /* Borda levemente branca para dar o brilho do vidro */
+  border: 1px solid rgba(255, 255, 255, 0.25);
   
   border-radius: 32px;
   padding: 35px 25px;
   width: 100%;
   max-width: 480px;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
   text-align: center;
   color: white;
 }
+  
     h3 { 
       margin: 0 0 25px; 
       font-size: 2.5rem; /* +70% aprox */
