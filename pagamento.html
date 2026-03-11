@@ -16,22 +16,22 @@
     }
     
   .container {
-  /* Trocamos o azul muito escuro por um azul mais vivo (0, 86, 179) 
-     e deixamos em 0.45 de transparência */
-  background: rgba(0, 66, 129, 0.35); 
+  /* Usamos um azul bem profundo (0, 25, 50) e 
+     subimos a opacidade para 0.7 para a cor aparecer bem */
+  background: rgba(0, 25, 50, 0.7); 
   
-  /* O borrão (blur) é o que faz parecer vidro */
+  /* O borrão (blur) continua forte para o efeito de vidro */
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   
-  /* Borda azul clara para dar o brilho nas quinas */
-  border: 2px solid rgba(0, 229, 255, 0.3);
+  /* Borda ciano com 40% de brilho para destacar o card */
+  border: 2px solid rgba(0, 229, 255, 0.4);
   
   border-radius: 32px;
   padding: 35px 25px;
   width: 100%;
   max-width: 480px;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
   text-align: center;
   color: white;
 }
