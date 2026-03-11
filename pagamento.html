@@ -9,17 +9,21 @@
     * { box-sizing: border-box; }
     
     body {
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: #061121 url("https://johnka1.github.io/pagamento-provedor/wallpaper.png") no-repeat center center fixed;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      /* O fundo começa apenas com a cor escura */
+      background-color: #061121;
+      background-image: url("https://johnka1.github.io/pagamento-provedor/wallpaper.png");
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
       background-size: cover;
       margin: 0; min-height: 100vh;
       display: flex; align-items: center; justify-content: center; padding: 15px;
       overflow: hidden;
     }
 
-    /* ANIMAÇÃO BLINDADA */
     @keyframes surgir {
-      0% { opacity: 0; transform: scale(0.5); }
+      0% { opacity: 0; transform: scale(0.4); }
       100% { opacity: 1; transform: scale(1); }
     }
 
@@ -32,50 +36,23 @@
       box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
       text-align: center; color: white;
       
-      /* Aciona a animação */
-      animation: surgir 0.5s ease-out forwards;
-      opacity: 0; /* Começa invisível e a animação torna visível */
+      /* Começa invisível */
+      opacity: 0;
+      pointer-events: none; /* Evita cliques antes de aparecer */
     }
 
-    h3 { 
-      margin: 0 0 25px; font-size: 2.5rem; color: #00e5ff; 
-      text-transform: uppercase; text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
+    /* Classe que o JavaScript vai adicionar */
+    .container.visivel {
+      animation: surgir 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      pointer-events: auto;
     }
 
-    #qrcode {
-      background: white; padding: 15px; border-radius: 20px;
-      display: inline-block; margin-bottom: 30px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    canvas { max-width: 100%; height: auto !important; }
-
-    .dados {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 20px; padding: 22px; margin-bottom: 15px;
-      text-align: left; border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .label-fatura { 
-      color: #2ecc71; font-weight: 900; display: block; 
-      margin-bottom: 10px; font-size: 1.45rem; text-transform: uppercase;
-    }
-
-    #pixText, #boletoText {
-      font-family: 'Courier New', monospace; font-weight: bold;
-      font-size: 1.7rem; word-break: break-all; color: #ffffff;
-    }
-
-    button {
-      width: 100%; min-height: 85px; padding: 15px; margin-bottom: 20px;
-      border: none; border-radius: 20px;
-      background: linear-gradient(135deg, #1db954 0%, #0056b3 100%);
-      color: white; font-size: 1.8rem; font-weight: 900; cursor: pointer;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    }
-    
-    button:active { transform: scale(0.95); }
+    h3 { margin: 0 0 25px; font-size: 2.5rem; color: #00e5ff; text-transform: uppercase; text-shadow: 3px 3px 6px #000; }
+    #qrcode { background: white; padding: 15px; border-radius: 20px; display: inline-block; margin-bottom: 30px; }
+    .dados { background: rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 22px; margin-bottom: 15px; text-align: left; border: 1px solid rgba(255, 255, 255, 0.1); }
+    .label-fatura { color: #2ecc71; font-weight: 900; display: block; margin-bottom: 10px; font-size: 1.45rem; text-transform: uppercase; }
+    #pixText, #boletoText { font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.7rem; word-break: break-all; color: #ffffff; }
+    button { width: 100%; min-height: 85px; border: none; border-radius: 20px; background: linear-gradient(135deg, #1db954 0%, #0056b3 100%); color: white; font-size: 1.8rem; font-weight: 900; cursor: pointer; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); }
 
     @media (max-width: 450px) {
       h3 { font-size: 1.8rem; }
@@ -85,21 +62,36 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="mainCard">
     <h3>Pagar Fatura</h3>
     <div id="qrcode"></div>
-    <div class="dados">
-      <span class="label-fatura">PIX Copia e Cola</span>
-      <span id="pixText">...</span>
-    </div>
+    <div class="dados"><span class="label-fatura">PIX Copia e Cola</span><span id="pixText">...</span></div>
     <button onclick="copiarPix()">COPIAR PIX</button>
-    <div class="dados">
-      <span class="label-fatura">Boleto</span>
-      <span id="boletoText">...</span>
-    </div>
+    <div class="dados"><span class="label-fatura">Boleto</span><span id="boletoText">...</span></div>
     <button onclick="copiarBoleto()">COPIAR BOLETO</button>
   </div>
+
   <script>
+    // 1. Monitorar o carregamento do Wallpaper
+    const wallpaperUrl = "https://johnka1.github.io/pagamento-provedor/wallpaper.png";
+    const img = new Image();
+    const card = document.getElementById("mainCard");
+
+    img.onload = function() {
+      // Wallpaper carregou! Espera um mini delay e mostra o card
+      setTimeout(() => {
+        card.classList.add("visivel");
+      }, 300);
+    };
+
+    img.onerror = function() {
+      // Se a imagem falhar, mostra o card do mesmo jeito para não travar o cliente
+      card.classList.add("visivel");
+    };
+
+    img.src = wallpaperUrl;
+
+    // Lógica do PIX/Boleto (mantida)
     const params = new URLSearchParams(window.location.search);
     const pix = params.get("pix") || "";
     const boleto = params.get("boleto") || "";
