@@ -10,7 +10,6 @@
     
     body {
       font-family: 'Segoe UI', Roboto, sans-serif;
-      /* O fundo começa apenas com a cor escura */
       background-color: #061121;
       background-image: url("https://johnka1.github.io/pagamento-provedor/wallpaper.png");
       background-repeat: no-repeat;
@@ -36,14 +35,14 @@
       box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
       text-align: center; color: white;
       
-      /* Começa invisível */
+      /* Invisível até o delay de 2s */
       opacity: 0;
-      pointer-events: none; /* Evita cliques antes de aparecer */
+      pointer-events: none;
     }
 
-    /* Classe que o JavaScript vai adicionar */
+    /* Ativado pelo JavaScript */
     .container.visivel {
-      animation: surgir 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      animation: surgir 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       pointer-events: auto;
     }
 
@@ -72,26 +71,23 @@
   </div>
 
   <script>
-    // 1. Monitorar o carregamento do Wallpaper
     const wallpaperUrl = "https://johnka1.github.io/pagamento-provedor/wallpaper.png";
     const img = new Image();
     const card = document.getElementById("mainCard");
 
     img.onload = function() {
-      // Wallpaper carregou! Espera um mini delay e mostra o card
+      // Espera 2 segundos após carregar o fundo para mostrar o card
       setTimeout(() => {
         card.classList.add("visivel");
-      }, 300);
+      }, 2000); 
     };
 
     img.onerror = function() {
-      // Se a imagem falhar, mostra o card do mesmo jeito para não travar o cliente
       card.classList.add("visivel");
     };
 
     img.src = wallpaperUrl;
 
-    // Lógica do PIX/Boleto (mantida)
     const params = new URLSearchParams(window.location.search);
     const pix = params.get("pix") || "";
     const boleto = params.get("boleto") || "";
