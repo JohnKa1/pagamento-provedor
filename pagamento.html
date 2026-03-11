@@ -27,21 +27,25 @@
     }
 
     .container {
-      /* TRUQUE DO FUNDO DUPLO PARA BORDA EM DEGRADÊ */
-      background: 
-        linear-gradient(#020617, #020617) padding-box, 
-        linear-gradient(#008fb3, #2ecc71) border-box;
-      border: 5px solid transparent; /* A borda é o gradiente aparecendo por baixo */
-      
-      border-radius: 35px;
-      padding: 40px 25px;
-      width: 100%; max-width: 480px;
-      box-shadow: 0 40px 100px rgba(0, 0, 0, 1);
-      text-align: center; color: white;
-      
-      opacity: 0;
-      pointer-events: none;
-    }
+  /* O primeiro linear-gradient é o fundo do card (Azul Absoluto) */
+  /* O segundo é a borda (Azul Oceano -> Verde Esmeralda) - SEM O PRETO */
+  background: 
+    linear-gradient(#020617, #020617) padding-box, 
+    linear-gradient(135deg, #008fb3, #2ecc71) border-box;
+  
+  border: 5px solid transparent; /* Mantém a borda transparente para o degradê aparecer */
+  border-radius: 35px;
+  padding: 40px 25px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 1);
+  text-align: center;
+  color: white;
+  
+  /* Mantendo a animação e o delay que você configurou */
+  opacity: 0;
+  pointer-events: none;
+}
 
     .container.visivel {
       animation: surgir 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
