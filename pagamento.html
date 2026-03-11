@@ -7,69 +7,79 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <style>
     * { box-sizing: border-box; }
+    
     body {
       font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background: #061121 url("https://johnka1.github.io/pagamento-provedor/wallpaper.png") no-repeat center center fixed;
       background-size: cover;
       margin: 0; min-height: 100vh;
       display: flex; align-items: center; justify-content: center; padding: 15px;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
-    /* --- ANIMAÇÃO DE CRESCER --- */
-    @keyframes crescerCentro {
-      from { opacity: 0; transform: scale(0.5); }
-      to { opacity: 1; transform: scale(1); }
+    /* ANIMAÇÃO BLINDADA */
+    @keyframes surgir {
+      0% { opacity: 0; transform: scale(0.5); }
+      100% { opacity: 1; transform: scale(1); }
     }
 
     .container {
       background-color: #0c1c40; 
-      border: 3px solid #00e5ff; 
-      border-radius: 32px;
+      border: 4px solid #00e5ff; 
+      border-radius: 35px;
       padding: 40px 25px;
       width: 100%; max-width: 480px;
-      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9);
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.9);
       text-align: center; color: white;
       
-      /* APLICAÇÃO DA ANIMAÇÃO: dura 0.5s com efeito suave */
-      animation: crescerCentro 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      /* Aciona a animação */
+      animation: surgir 0.5s ease-out forwards;
+      opacity: 0; /* Começa invisível e a animação torna visível */
     }
 
     h3 { 
-      margin: 0 0 30px; font-size: 2.5rem; color: #00e5ff; 
-      text-transform: uppercase; text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+      margin: 0 0 25px; font-size: 2.5rem; color: #00e5ff; 
+      text-transform: uppercase; text-shadow: 3px 3px 6px rgba(0,0,0,0.8);
     }
+
     #qrcode {
       background: white; padding: 15px; border-radius: 20px;
       display: inline-block; margin-bottom: 30px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
+
+    canvas { max-width: 100%; height: auto !important; }
+
     .dados {
       background: rgba(255, 255, 255, 0.05);
       border-radius: 20px; padding: 22px; margin-bottom: 15px;
       text-align: left; border: 1px solid rgba(255, 255, 255, 0.1);
     }
+
     .label-fatura { 
       color: #2ecc71; font-weight: 900; display: block; 
       margin-bottom: 10px; font-size: 1.45rem; text-transform: uppercase;
     }
+
     #pixText, #boletoText {
       font-family: 'Courier New', monospace; font-weight: bold;
       font-size: 1.7rem; word-break: break-all; color: #ffffff;
     }
+
     button {
-      width: 100%; min-height: 80px; padding: 15px; margin-bottom: 20px;
+      width: 100%; min-height: 85px; padding: 15px; margin-bottom: 20px;
       border: none; border-radius: 20px;
       background: linear-gradient(135deg, #1db954 0%, #0056b3 100%);
       color: white; font-size: 1.8rem; font-weight: 900; cursor: pointer;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-      transition: transform 0.2s;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
-    button:hover { transform: scale(1.03); filter: brightness(1.1); }
+    
+    button:active { transform: scale(0.95); }
 
     @media (max-width: 450px) {
       h3 { font-size: 1.8rem; }
-      #pixText, #boletoText { font-size: 1.3rem; }
+      #pixText, #boletoText { font-size: 1.2rem; }
       button { font-size: 1.5rem; }
     }
   </style>
