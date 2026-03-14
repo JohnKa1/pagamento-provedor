@@ -8,6 +8,7 @@
     * { box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', sans-serif;
+      /* O segredo: a cor de fundo carrega antes da imagem */
       background-color: #020617;
       background-image: url("https://johnka1.github.io/pagamento-provedor/wallpaper.png");
       background-repeat: no-repeat;
@@ -43,12 +44,8 @@
     #linkGerado { margin-top: 30px; background: #ffffff; color: #020617; padding: 25px; border-radius: 20px; word-break: break-all; font-weight: 900; font-size: 1.3rem; display: none; }
     .btn-whatsapp { background: #25d366; color: #fff; margin-top: 20px; display: none; }
 
-    /* --- AJUSTE: 20% MENOR EM CELULARES --- */
     @media (max-width: 480px) {
-      .container { 
-        max-width: 400px; /* Reduzido de 500 para 400 */
-        padding: 30px 20px; 
-      }
+      .container { max-width: 400px; padding: 30px 20px; }
       h2 { font-size: 1.7rem; }
       label { font-size: 1.1rem; margin: 15px 0 8px; }
       textarea { height: 90px; font-size: 1rem; }
@@ -68,12 +65,30 @@
   <div id="linkGerado"></div>
   <button id="btnCopy" class="btn-whatsapp" onclick="copiar()">📋 COPIAR LINK</button>
 </div>
+
 <script>
     const wallpaperUrl = "https://johnka1.github.io/pagamento-provedor/wallpaper.png";
     const img = new Image();
     const card = document.getElementById("mainCard");
-    img.onload = function() { setTimeout(() => { card.classList.add("visivel"); }, 1000); };
-    img.onerror = function() { card.classList.add("visivel"); };
+    let cardJaApareceu = false;
+
+    // Função central para mostrar o card
+    function dispararCard() {
+      if (!cardJaApareceu) {
+        cardJaApareceu = true;
+        card.classList.add("visivel");
+      }
+    }
+
+    // Se a imagem carregar rápido, esperamos 1s de "charme"
+    img.onload = function() {
+      setTimeout(dispararCard, 1000); 
+    };
+
+    // Se a imagem der erro ou demorar mais de 2 segundos (no 4G), mostra o card de qualquer jeito!
+    img.onerror = dispararCard;
+    setTimeout(dispararCard, 2000); 
+
     img.src = wallpaperUrl;
 
     let linkFinal = "";
