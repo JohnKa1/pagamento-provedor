@@ -10,6 +10,7 @@
     
     body {
       font-family: 'Segoe UI', Roboto, sans-serif;
+      /* Fundo sólido carrega instantâneo */
       background-color: #020617;
       background-image: url("https://johnka1.github.io/pagamento-provedor/wallpaper.png");
       background-repeat: no-repeat;
@@ -46,17 +47,22 @@
 
     h3 { margin: 0 0 25px; font-size: 2.5rem; color: #008fb3; text-transform: uppercase; text-shadow: 3px 3px 8px #000; }
     #qrcode { background: white; padding: 15px; border-radius: 20px; display: inline-block; margin-bottom: 30px; }
+    canvas { max-width: 100%; height: auto !important; }
+
     .dados { background: rgba(255, 255, 255, 0.03); border-radius: 20px; padding: 22px; margin-bottom: 15px; text-align: left; border: 1px solid rgba(255, 255, 255, 0.08); }
     .label-fatura { color: #2ecc71; font-weight: 900; display: block; margin-bottom: 10px; font-size: 1.45rem; text-transform: uppercase; }
     #pixText, #boletoText { font-family: 'Courier New', monospace; font-weight: bold; font-size: 1.6rem; word-break: break-all; color: #ffffff; }
-    button { width: 100%; min-height: 85px; border: none; border-radius: 20px; background: linear-gradient(135deg, #1db954 0%, #0056b3 100%); color: white; font-size: 1.8rem; font-weight: 900; cursor: pointer; margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6); }
+    
+    button { 
+      width: 100%; min-height: 85px; border: none; border-radius: 20px; 
+      background: linear-gradient(135deg, #1db954 0%, #0056b3 100%); 
+      color: white; font-size: 1.8rem; font-weight: 900; cursor: pointer; 
+      margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6); 
+    }
 
     /* --- AJUSTE: 20% MENOR EM CELULARES --- */
     @media (max-width: 480px) {
-      .container { 
-        max-width: 380px; /* Reduzido de 480 para 380 */
-        padding: 30px 20px; /* Redução de preenchimento */
-      }
+      .container { max-width: 380px; padding: 30px 20px; }
       h3 { font-size: 1.8rem; margin-bottom: 15px; }
       #qrcode { margin-bottom: 20px; transform: scale(0.9); }
       .label-fatura { font-size: 1.15rem; }
@@ -80,8 +86,24 @@
     const wallpaperUrl = "https://johnka1.github.io/pagamento-provedor/wallpaper.png";
     const img = new Image();
     const card = document.getElementById("mainCard");
-    img.onload = function() { setTimeout(() => { card.classList.add("visivel"); }, 1000); };
-    img.onerror = function() { card.classList.add("visivel"); };
+    let cardJaExibido = false;
+
+    function mostrarCard() {
+      if (!cardJaExibido) {
+        cardJaExibido = true;
+        card.classList.add("visivel");
+      }
+    }
+
+    // Se carregar a imagem, espera 1s e mostra
+    img.onload = function() {
+      setTimeout(mostrarCard, 1000); 
+    };
+
+    // Fail-safe: Se der erro ou passar de 2s no 4G, mostra o card de qualquer jeito
+    img.onerror = mostrarCard;
+    setTimeout(mostrarCard, 2000); 
+
     img.src = wallpaperUrl;
 
     const params = new URLSearchParams(window.location.search);
@@ -94,8 +116,15 @@
       });
     }
     if (boleto) document.getElementById("boletoText").innerText = boleto;
-    function copiarPix() { navigator.clipboard.writeText(pix); alert("PIX COPIADO!"); }
-    function copiarBoleto() { navigator.clipboard.writeText(boleto); alert("BOLETO COPIADO!"); }
+    
+    function copiarPix() { 
+      navigator.clipboard.writeText(pix); 
+      alert("PIX COPIADO!"); 
+    }
+    function copiarBoleto() { 
+      navigator.clipboard.writeText(boleto); 
+      alert("BOLETO COPIADO!"); 
+    }
   </script>
 </body>
 </html>
